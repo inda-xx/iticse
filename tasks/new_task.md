@@ -1,3 +1,5 @@
+![Task Image](images/task_image_20250630_233108.png)
+
 # Speed, Strategy & Rubber 🏎️💥
 
 ## 📋 Overview
