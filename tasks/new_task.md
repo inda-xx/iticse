@@ -1,3 +1,5 @@
+![Task Image](images/task_image_20250701_070218.png)
+
 # Galactic Travel Log 🪐🗺️
 
 ## 📋 Overview
