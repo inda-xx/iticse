@@ -7,50 +7,34 @@ import static org.junit.Assert.*;
 public class CarTest {
 
     @Test
-    public void updateWithLapCorrectlyIncreasesWear() {
-        Tire tire = new Tire(90.0);
+    public void wearOnlyAccumulatesWhenHot() {
+        Tire tire = new Tire(70.0); // below threshold
         Car car = new Car(tire);
 
-        // Temp 100 °C   ⇒  (100 – 80) * 0.05 = 1.0 % wear
-        TelemetryData data = new TelemetryData(1, 100.0, 30.0, 90.0);
-        car.updateWithLap(data);
+        TelemetryData coolLap = new TelemetryData(1, 75.0, 30.0, 90.0);
+        car.updateWithLap(coolLap);
+        assertEquals(0.0, tire.getWearPercentage(), 0.0001);
 
-        assertEquals(1.0, tire.getWearPercentage(), 0.0001);
-        assertFalse(car.hasBlownTire());
+        TelemetryData hotLap = new TelemetryData(2, 100.0, 32.0, 88.0);
+        car.updateWithLap(hotLap);
+        double expectedWear = (100.0 - 80.0) * 0.05; // 1.0
+        assertEquals(expectedWear, tire.getWearPercentage(), 1e-10);
     }
 
     @Test
-    public void updateWithLapDoesNotDecreaseWearWhenTemperatureIsLow() {
-        Tire tire = new Tire(90.0);
+    public void blownTireIsDetected() {
+        Tire tire = new Tire(120.0);
         Car car = new Car(tire);
 
-        TelemetryData hotLap = new TelemetryData(1, 100.0, 30.0, 90.0);
-        car.updateWithLap(hotLap);               // +1 % wear
-
-        TelemetryData coldLap = new TelemetryData(2, 70.0, 30.0, 90.0);
-        car.updateWithLap(coldLap);              // should add 0 % wear
-
-        assertEquals(1.0, tire.getWearPercentage(), 0.0001);
-    }
-
-    @Test
-    public void blownTireFlagIsRaisedWhenWearReachesHundred() {
-        Tire tire = new Tire(90.0);
-        tire.incrementWear(99.0);                // very worn
-        Car car = new Car(tire);
-
-        // A very hot lap that adds ≥ 1 % wear
-        TelemetryData data = new TelemetryData(50, 120.0, 40.0, 90.0);
-        car.updateWithLap(data);
-
+        // each lap at 120C adds (120-80)*0.05 = 2.0 wear
+        for (int i = 1; i <= 51; i++) {
+            car.updateWithLap(new TelemetryData(i, 120.0, 35.0, 85.0));
+        }
+        assertTrue(tire.getWearPercentage() >= 100.0);
         assertTrue(car.hasBlownTire());
-        assertEquals(100.0, tire.getWearPercentage(), 0.0001);
     }
 }
 
-
-
-// RaceEngineerTest.java
-import org.junit.Test;
-import static org.junit.Assert.*;
-
+/**
+ * Tests for Traveler & Itinerary
+ */

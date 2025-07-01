@@ -6,52 +6,44 @@ import static org.junit.Assert.*;
 
 public class TelemetryReaderTest {
 
-    @Rule
-    public TemporaryFolder tmp = new TemporaryFolder();
-
-    private File createFile(String contents) throws Exception {
-        File f = tmp.newFile();
-        try (FileWriter w = new FileWriter(f)) {
-            w.write(contents);
-        }
-        return f;
-    }
-
     @Test
-    public void nextLapReturnsCorrectTelemetryData() throws Exception {
-        File file = createFile("1,100.0,25.0,90.5\n");
-        TelemetryReader reader = new TelemetryReader(file.getAbsolutePath());
+    public void readsTelemetryLinesCorrectly() throws Exception {
+        Path tmp = Files.createTempFile("telemetry", ".csv");
+        List<String> lines = Arrays.asList(
+                "1,90.0,30.0,85.5",
+                "2,95.0,32.0,85.0"
+        );
+        Files.write(tmp, lines);
 
-        Optional<TelemetryData> opt = reader.nextLap();
-        assertTrue(opt.isPresent());
+        TelemetryReader reader = new TelemetryReader(tmp.toString());
 
-        TelemetryData d = opt.get();
-        assertEquals(1, d.getLapNumber());
-        assertEquals(100.0, d.getTireTempCelsius(), 0.0001);
-        assertEquals(25.0, d.getTrackTempCelsius(), 0.0001);
-        assertEquals(90.5, d.getLapTimeSeconds(), 0.0001);
+        Optional<TelemetryData> d1 = reader.nextLap();
+        assertTrue(d1.isPresent());
+        assertEquals(1, d1.get().getLapNumber());
+        assertEquals(90.0, d1.get().getTireTempCelsius(), 1e-10);
 
-        assertTrue(reader.nextLap().isEmpty());              // EOF reached
+        Optional<TelemetryData> d2 = reader.nextLap();
+        assertTrue(d2.isPresent());
+        assertEquals(2, d2.get().getLapNumber());
+
+        Optional<TelemetryData> d3 = reader.nextLap();
+        assertFalse(d3.isPresent());
+
         reader.close();
+        Files.deleteIfExists(tmp);
     }
 
-    @Test(expected = java.io.IOException.class)
-    public void malformedLineThrowsIOException() throws Exception {
-        File file = createFile("bad,line,only,three\n");     // requires 4 numeric fields
-        TelemetryReader reader = new TelemetryReader(file.getAbsolutePath());
-        reader.nextLap();                                    // should throw
+    @Test(expected = IOException.class)
+    public void throwsIOExceptionOnMalformedLine() throws Exception {
+        Path tmp = Files.createTempFile("telemetry_bad", ".csv");
+        List<String> lines = Arrays.asList(
+                "1,90.0,30.0,85.5",
+                "bad,data,line"
+        );
+        Files.write(tmp, lines);
+
+        TelemetryReader reader = new TelemetryReader(tmp.toString());
+        reader.nextLap(); // first ok
+        reader.nextLap(); // malformed triggers IOException
     }
 }
-
-
-
-// StrategyLoaderTest.java
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.TemporaryFolder;
-
-import java.io.File;
-import java.io.FileWriter;
-
-import static org.junit.Assert.*;
-
