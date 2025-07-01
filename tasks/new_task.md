@@ -1,327 +1,347 @@
-![Task Image](images/task_image_20250630_233108.png)
-
-# Speed, Strategy & Rubber 🏎️💥
+# Galactic Travel Log 🪐🗺️
 
 ## 📋 Overview
-Imagine you’re the lead software engineer for a Formula 1 team on race day. Your job is to build an on-track “tire strategist” that continuously monitors each tire’s wear, warns the driver when a blow-out is imminent, and recommends the perfect lap to pit (“box”) so valuable seconds aren’t wasted on overly cautious stops. In this multi-part project you’ll create the core simulation engine for that tool: a mini-game where every lap is a high-stakes gamble between squeezing out more performance and avoiding catastrophic tire failure.
+Imagine you are part of the Interstellar Tourism Board, curating travel packages for adventurous space-farers. Each day, probes send back files packed with data about newly discovered planets—temperature ranges, atmospheric makeup, gravity, and the number of moons. Your job is to turn those raw text files into rich Planet objects, then craft a Java program that helps travelers choose their perfect cosmic getaway.
 
-Why is this interesting? Real F1 strategists juggle dozens of variables—tire compound, track temperature, driver style—to make split-second decisions that can win or lose a Grand Prix. By modeling just a few of those factors in Java, you’ll practice reading live-looking data from files, designing clean class hierarchies, and adding your own creative twists such as random weather changes or driver aggression levels. When you’re done, you’ll have a playable console game and a deeper appreciation of data-driven decision making under pressure.
+In this multi-part task you’ll read CSV data describing planets, automatically instantiate Planet objects, and design supporting classes such as Traveler and Itinerary. You’ll finish by adding your own creative twist: maybe a quirky recommendation engine, an ASCII star-map, or a mini-game that awards badges for visiting exotic worlds. Besides being fun, this mirrors real-world systems that transform external data (think JSON from web APIs or sensor logs) into live software objects.
 
 ## 🎯 Learning Objectives
 By completing this task, you will:
-- Read lap-by-lap telemetry data from a CSV file and use it to instantiate Tire objects dynamically.
-- Design cohesive classes (e.g., Tire, Car, RaceEngineer) with clear responsibilities and interfaces.
-- Apply creative programming techniques to add unpredictable race events and strategic depth.
-- Handle file I/O exceptions gracefully to maintain simulation integrity.
-- Practice incremental development: plan, sketch, code, test, and iterate.
+- Read structured data from files and safely instantiate Java objects from that data.
+- Design cohesive, well-encapsulated classes (e.g., Planet, Traveler, Itinerary) with clear interfaces.
+- Apply creative problem-solving to add an original feature to your program.
+- Handle common file I/O exceptions and validate incoming data for integrity.
+- Practice incremental planning: from conceptual model to class diagram to working code.
 
 ## 📚 Prerequisites
 Before starting this task, you should be familiar with:
-- Java classes, objects, and basic inheritance
-- Reading text files using java.io or java.nio
-- Exception handling (try-catch, throws)
-- An IDE such as IntelliJ IDEA or VS Code with a Java 17+ JDK installed
+- Basic Java syntax (variables, methods, loops, conditionals).
+- Fundamentals of object-oriented programming (classes, objects, constructors).
+- Simple file I/O using java.io or java.nio (e.g., File, Scanner, Files).
+- An IDE of your choice (IntelliJ, Eclipse, VS Code) and Git for version control (recommended).
 
 ## 🚀 Getting Started
-1. Clone the starter repository (link provided by your instructor) or download the ZIP.
-2. Open the project in your IDE and run `Main.java`—you should see a placeholder menu.
-3. Inspect `data/sample_telemetry.csv`; each row represents lap time, tire temperature, and track temp.
-4. Skim the skeleton classes (`Tire.java`, `Car.java`, `RaceSimulator.java`)—they’re intentionally incomplete.
+1. Clone the starter repository (link in your course LMS).  
+   It contains:
+   • /data/planets_sample.csv – a tiny dataset to experiment with  
+   • /src/template/ – empty class files with TODO markers  
+2. Open the project in your IDE and run `PlanetReaderTest` to verify your environment.  
+3. Skim `planets_sample.csv` so you understand the columns (name, distanceFromSunAU, gravity, avgTempC, moonCount).  
+4. Read the Exercises below before writing any code—you’ll plan first.
 
 ## Exercises
 
-### Exercise 1: Rubber Meets Reality 📖
+### Exercise 1: Reading the Stars on Paper 📖
 **⏱️ Estimated Time:** 20-30 minutes
 
-**🎯 Goal:** Deepen your conceptual understanding of how real-world telemetry translates into object attributes and game decisions.
+**🎯 Goal:** Build conceptual understanding of how raw file data maps to object attributes and why validation matters.
 
 **📝 Instructions:**
-Answer the following in a short written reflection (markdown or plain text):
-
-1. Identify at least three physical properties of an F1 tire that meaningfully affect its lifespan. For each, suggest an appropriate Java data type and explain why.
-2. Examine `data/sample_telemetry.csv`. Propose a parsing plan: which columns map to which Tire fields? What conversions (if any) are needed?
-3. Tire blow-outs are rare but dramatic. Describe two algorithmic approaches for predicting the probability of a blow-out from wear and temperature data.
-4. Consider edge cases: what should your program do if the telemetry file contains corrupt or missing values?
+1. Open `planets_sample.csv` in a text editor. Describe in your own words what each column represents and the data type you would assign to it in Java.  
+2. List at least three potential issues that could arise when reading this file (e.g., missing values, corrupted lines). For each, note a strategy to detect or handle it in code.  
+3. Explain the difference between storing planet data in parallel `ArrayList`s (one list per attribute) versus creating a `Planet` class. Discuss pros and cons.  
+4. Think about scalability: If the file grows to 1 million lines, what memory or performance considerations might influence your design choices?
 
 **💡 Hints:**
 <details>
 <summary>Click for hint</summary>
 
-Think of the tire as a gradually degrading health bar. Temperature spikes or very long stints accelerate that degradation. Real engineers use both deterministic thresholds (e.g., >140 °C = danger) and stochastic models (probability curves). For file corruption, imagine a sensor glitch mid-race—you’d want the software to default to a safe assumption rather than crash.
+Real-world CSV files are rarely perfect—astronomical instruments can glitch just like a cash register printing a funky receipt. Consider using `try { … } catch (NumberFormatException e)` blocks and default values to keep your program from crashing when it encounters an “oops” in space data.
 
 </details>
 
 **✅ Success Criteria:**
-- [ ] Listed three tire properties with suitable data types and justifications
-- [ ] Outlined a clear column-to-field mapping and required conversions
-- [ ] Compared at least two blow-out prediction algorithms
-- [ ] Proposed a sensible strategy for handling bad telemetry data
+- [ ] Correctly identify Java data types for every CSV column.  
+- [ ] Provide at least three realistic file-reading issues and mitigation strategies.  
+- [ ] Clearly articulate benefits of object-oriented storage over parallel collections.  
 
-### Exercise 2: Blueprinting the Pit Wall 🔍
+### Exercise 2: Sketching the Cosmic Blueprint 🔍
 **⏱️ Estimated Time:** 30-40 minutes
 
-**🎯 Goal:** Bridge theory to practice by designing the class architecture and data flow for the simulation.
+**🎯 Goal:** Translate conceptual insights into a concrete class design that will later guide your implementation.
 
 **📝 Instructions:**
-1. Draw a UML class diagram (hand-drawn and photographed is fine) featuring at minimum: Tire, Car, TelemetryReader, RaceEngineer, and RaceSimulator. Indicate relationships (composition, association) and key methods/fields.
-2. Write a brief justification (3-4 sentences per class) explaining each class’s single responsibility.
-3. Outline pseudocode for the main simulation loop that:
-   a. Reads the next telemetry row  
-   b. Updates tire wear and temperature  
-   c. Checks for pit-stop recommendation  
-   d. Ends the race when laps are exhausted or a blow-out occurs
-4. Review the starter code and annotate where your planned methods will integrate. Use inline comments like `// TODO Exercise 2`.
+1. Draw (on paper or with a UML tool) a class diagram that includes at minimum `Planet`, `Traveler`, and `Itinerary`. Show fields, key methods, and relationships (e.g., “Itinerary has-a List<Planet>”).  
+2. Annotate your diagram with visibility (+/-), data types, and any important method signatures.  
+3. Write a short paragraph explaining how your classes respect the Single Responsibility Principle.  
+4. Draft pseudocode (no more than 15 lines) for a `readPlanetsFromFile(String filename)` method that populates a `List<Planet>` from the CSV. Focus on structure—details can come later.
 
 **💡 Hints:**
 <details>
 <summary>Click for hint</summary>
 
-Aim for high cohesion and low coupling. TelemetryReader should know about files, not tires. RaceEngineer makes decisions but doesn’t grind numbers—delegate calculations to Tire. Avoid “God classes” that do everything.
+When in doubt, start simple: think of `Planet` as a data container, `Traveler` as a user profile, and `Itinerary` as a coordinator. Avoid circular dependencies. If two classes must talk frequently, consider an interface or helper class.
 
 ```java
-public class TelemetryReader {
-    public Optional<TelemetryData> nextLap() throws IOException {
-        // Read CSV line → return TelemetryData or empty if EOF
-    }
+public List<Planet> readPlanetsFromFile(String filename) throws IOException {
+    // 1. Create empty list
+    // 2. Open file with try-with-resources
+    // 3. Loop through lines, skip header
+    // 4. Parse and validate
+    // 5. Instantiate Planet, add to list
+    // 6. Return list
 }
 ```
 
 </details>
 
 **✅ Success Criteria:**
-- [ ] UML diagram includes required classes with correct relationships
-- [ ] Justifications reflect the Single Responsibility Principle
-- [ ] Pseudocode covers all four main loop steps logically
-- [ ] Starter code annotated with clear TODOs that align with the design
+- [ ] Diagram includes required classes with clear relationships.  
+- [ ] Explanatory paragraph cites at least one design principle (e.g., SRP, Encapsulation).  
+- [ ] Pseudocode captures all major steps of file reading without diving into full implementation.
 
-### Exercise 3: Spinning Up the Tires 🏗️  
-⏱️ Estimated Time: 45-60 minutes  
+Below is the continuation you requested—Exercises 3-6 plus the remaining sections, written in exactly the same format you started. Copy-and-paste straight into your hand-out or LMS.
 
-🎯 Goal: Turn raw CSV rows into fully-formed Java objects. You’ll write the TelemetryReader that parses each line, create a lightweight TelemetryData class to hold one lap’s values, and enhance the Tire class so it can be instantiated directly from that data.
+---
 
-📝 Instructions:  
-1. Open `TelemetryReader.java`; you’ll see three TODO blocks. Complete them so the class  
-   a. Opens the file passed into the constructor  
-   b. Reads one line at a time with `BufferedReader.readLine()`  
-   c. Converts each line into a `TelemetryData` object (see step 2)  
-2. Create `TelemetryData.java` in `src/model`. It should store at minimum:  
-   • lapNumber (int)  
-   • tireTempCelsius (double)  
-   • trackTempCelsius (double)  
-   • lapTimeSeconds (double)  
-3. In `Tire.java` add a new constructor that receives a `TelemetryData` instance and sets starting temperature and an initial wear value of 0.0.  
-4. In `Main.java` (or a quick test harness) loop over the first five lines of the file and print each `Tire` you create.  
+### Exercise 3: From CSV to Object Factory 🏗️  
+**⏱️ Estimated Time:** 45-60 minutes  
 
-Expected console output (values will differ):  
+**🎯 Goal:** Implement the core `Planet` class and a `PlanetFactory` that turns validated CSV rows into fully-formed `Planet` objects. This is your first hands-on coding step after planning in Exercises 1-2.  
+
+**📝 Instructions:**  
+1. Open `/src/template/Planet.java`. Complete the TODOs so the class is immutable (all fields `private final`) and well-encapsulated.  
+2. Create `/src/template/PlanetFactory.java` and implement a single public static method:
+
+   ```java
+   public static Optional<Planet> fromCsv(String csvLine, int lineNumber)
+   ```
+   The method should:  
+   • Split the line by commas (`,`).  
+   • Validate that you have exactly 5 columns.  
+   • Convert each column to the correct Java type.  
+   • If anything fails, log a warning with the line number and return `Optional.empty()`.  
+   • On success, return `Optional.of(new Planet(...))`.  
+
+3. Write a tiny driver in `PlanetReaderTest` that loops through `planets_sample.csv`, calls `PlanetFactory.fromCsv`, and prints each resulting object’s `toString()`.  
+
+Expected console output snippet (values will vary):
+
 ```
-Lap 1 → Tire{temp=93.5 °C, wear=0.00 %}
-Lap 2 → Tire{temp=94.1 °C, wear=0.00 %}
-Lap 3 → Tire{temp=94.9 °C, wear=0.00 %}
-Lap 4 → Tire{temp=95.6 °C, wear=0.00 %}
-Lap 5 → Tire{temp=96.3 °C, wear=0.00 %}
+Reading 10 records…
+✓ Line 1   ➜ Planet{name='Mercury', distanceFromSunAU=0.39, gravity=3.7, avgTempC=167, moonCount=0}
+✓ Line 2   ➜ Planet{name='Venus',   distanceFromSunAU=0.72, gravity=8.8, avgTempC=464, moonCount=0}
+…
 ```
 
-Starter code
 ```java
-// TelemetryReader.java (excerpt)
-public class TelemetryReader {
-    private BufferedReader reader;
+// Starter code
+public class Planet {
+    // TODO: Declare private final fields
 
-    public TelemetryReader(String filename) throws IOException {
-        // TODO: initialize 'reader' here
-    }
+    // TODO: Public constructor with all fields
 
-    public Optional<TelemetryData> nextLap() throws IOException {
-        // TODO: read a line and return Optional.of(new TelemetryData(...))
-        //       or Optional.empty() if end-of-file
-    }
+    // TODO: Getters only (no setters)
 
-    public void close() throws IOException {
-        // TODO: close the reader
+    @Override
+    public String toString() {
+        // TODO: Return nicely formatted summary
+        return "";
     }
 }
 ```
 
-💡 Hints:  
+**💡 Hints:**  
 <details>
 <summary>Click for hint</summary>
 
-1. Use `String.split(",")` for quick parsing.  
-2. `Double.parseDouble(parts[2])` converts a String to double.  
-3. Wrap I/O operations in `try/catch` but re-throw as needed so callers can handle errors.
+• Use `Double.parseDouble` and `Integer.parseInt`.  
+• `Optional<Planet>` is cleaner than returning `null`.  
+• Inside `PlanetFactory`, don’t swallow exceptions—catch, log, then continue.  
 
 ```java
-if (parts.length < 4) {
-    throw new IOException("Malformed telemetry line: " + Arrays.toString(parts));
+try {
+    double gravity = Double.parseDouble(tokens[2]);
+} catch (NumberFormatException nfe) {
+    System.err.println("Line " + lineNumber + ": bad gravity → “" + tokens[2] + "”");
+    return Optional.empty();
+}
+```
+
+</details>
+
+**✅ Success Criteria:**  
+- [ ] `Planet` is immutable and passes provided unit tests.  
+- [ ] `PlanetFactory.fromCsv` builds objects for all valid lines and skips/flags bad ones.  
+- [ ] No uncaught exceptions when reading the sample file.  
+- [ ] Code is cleanly formatted and documented.
+
+---
+
+### Exercise 4: Building the Traveler’s Itinerary 🔄  
+**⏱️ Estimated Time:** 45-60 minutes  
+
+**🎯 Goal:** Integrate newly created `Planet` objects with `Traveler` and `Itinerary` classes so a user can assemble a personalized travel plan.  
+
+**📝 Instructions:**  
+1. Complete `/src/template/Traveler.java` with fields `name`, `preferredGravityRange`, and `preferredTempRange`. Provide constructors, getters, and a method `boolean likes(Planet p)`.  
+2. Finish `/src/template/Itinerary.java` so it stores a `Traveler` and a `List<Planet>`. Add:  
+   • `void addPlanet(Planet p)` – only adds if `traveler.likes(p)` returns true.  
+   • `double averageGravity()` – computes average gravity across selected planets.  
+   • `String summary()` – returns a multi-line itinerary description.  
+3. Update `PlanetReaderTest` or create a new class `DemoItinerary` that:  
+   • Reads all planets with `PlanetFactory`.  
+   • Prompts the user for their name, min/max gravity, and min/max temperature (use `Scanner`).  
+   • Recommends planets that match and builds an `Itinerary`.  
+   • Prints `itinerary.summary()` at the end.  
+
+**💡 Hints:**  
+<details>
+<summary>Click for hint</summary>
+
+• To avoid too much I/O code, hard-code Traveler preferences while testing, then swap in interactive `Scanner` input later.  
+• Use `java.util.stream.Collectors` to filter planets quickly:
+
+```java
+List<Planet> matches = allPlanets.stream()
+                                 .filter(traveler::likes)
+                                 .collect(Collectors.toList());
+```
+</details>
+
+**✅ Success Criteria:**  
+- [ ] `Traveler` and `Itinerary` compile and meet unit tests.  
+- [ ] Only planets fitting user preferences are added.  
+- [ ] `summary()` displays at least planet names and overall averages.  
+- [ ] Program handles the case “no matching planets” gracefully.
+
+---
+
+### Exercise 5: Catalog Commander & Robust File I/O 🚀  
+**⏱️ Estimated Time:** 60-90 minutes  
+
+**🎯 Goal:** Create a `CatalogCommander` class that loads planets from file at start-up, lets the user interactively save favorite itineraries to disk, and demonstrates advanced exception handling.  
+
+**📝 Instructions:**  
+1. Implement `/src/template/CatalogCommander.java` with a `main` method.  
+2. On start-up, attempt to read planets from `planets.csv` **OR** (if the file is missing) from a remote URL supplied in the starter file. Store the resulting list.  
+3. Present a text menu:  
+   1. List all planets (paginated 10 at a time).  
+   2. Create new traveler & itinerary (reuse Exercise 4 code).  
+   3. Save current itinerary to `itineraries/NAME_itinerary.txt`.  
+   4. Quit.  
+4. Ensure every file operation (read or write) is wrapped in try-with-resources and all checked exceptions are handled or declared.  
+5. Document key methods with Javadoc.  
+
+Breakdown (recommended order):  
+a. `loadCatalog()` – handles local file or fallback URL.  
+b. `showMenu()` – simple loop with `switch`.  
+c. `saveItinerary(Itinerary i)` – validates the output folder exists or creates it.  
+
+**💡 Hints:**  
+<details>
+<summary>Click for hint</summary>
+
+• To read from a URL:
+
+```java
+try (BufferedReader in = new BufferedReader(
+        new InputStreamReader(new URL(urlString).openStream()))) {
+    // read lines
+}
+```  
+
+• For pagination, store an `int index` and print slices of 10.  
+• Surround risky code:
+
+```java
+try {
+    Files.createDirectories(Path.of("itineraries"));
+} catch (IOException ioe) {
+    System.err.println("🚨 Cannot create output folder: " + ioe.getMessage());
 }
 ```
 </details>
 
-✅ Success Criteria:  
-- [ ] `TelemetryReader.nextLap()` returns correct data for every row  
-- [ ] `TelemetryData` encapsulates lap values with getters (no public fields)  
-- [ ] New `Tire` constructor correctly initializes temperature and wear  
-- [ ] Demo program prints five valid Tire instances without crashing  
+**✅ Success Criteria:**  
+- [ ] Program recovers if local file missing and downloads from URL.  
+- [ ] All file and network resources are properly closed.  
+- [ ] User can save itineraries; files show correct content.  
+- [ ] Javadoc present for every public class/method added.  
 
+---
 
-### Exercise 4: The Heartbeat Loop 🔄  
-⏱️ Estimated Time: 45-60 minutes  
+### Exercise 6: Choose-Your-Own-Galactic-Adventure 🌟  
+**⏱️ Estimated Time:** 60-90 minutes  
 
-🎯 Goal: Wire your objects together into a real-time simulation loop that updates tire wear, checks for danger, and logs each lap.
+**🎯 Goal:** Add an original, creative feature that extends your project beyond the spec while showcasing clean design and documentation. Pick ONE of the options below or propose your own (check with your instructor).  
 
-📝 Instructions:  
-1. In `RaceSimulator.java` locate the `run()` method stub. Flesh it out so it performs:  
-   a. `TelemetryData lap = telemetryReader.nextLap()`  
-   b. `car.updateWithLap(lap)` (you’ll implement this in `Car.java`)  
-   c. Ask `RaceEngineer.shouldPit(car)`; if true, print “BOX, BOX, BOX!”  
-   d. Stop looping if `lapNumber > totalLaps` or `car.hasBlownTire()`  
-2. Implement `Car.updateWithLap(TelemetryData)` to:  
-   • Forward temperature to its `Tire` object  
-   • Increase wear by an amount proportional to temperature and lap time  
-3. In `Tire`, add `incrementWear(double delta)` and `boolean isBlown()` (true if wear ≥ 100 %).  
-4. Run `Main.java`. You should see a lap-by-lap log similar to:  
-```
-Lap 12 | Temp 109.3 °C | Wear 64.2 % | SAFE
-Lap 13 | Temp 110.1 °C | Wear 67.9 % | SAFE
-Lap 14 | Temp 112.7 °C | Wear 72.5 % | BOX, BOX, BOX!
-```
+**📝 Instructions:**  
 
-💡 Hints:  
+Option A: ASCII Star-Map Renderer  
+- Display a simple ASCII grid where each discovered planet is plotted by polar coordinates (distance vs. temperature).  
+- Allow users to “zoom” by changing scale factors.  
+
+Option B: Achievement Badge System  
+- Award badges (e.g., “Moon Collector,” “Low-G Lover”) based on patterns in a traveler’s itinerary.  
+- Store earned badges in a JSON or text file so they persist between runs.  
+
+Option C: Smart Recommendation Engine  
+- Implement a rule-based or simple weighted-score algorithm that ranks planets for a traveler instead of boolean likes/dislikes.  
+- Display the top-5 suggestions with explanations of the scoring.  
+
+All options must include at least:  
+• One new class (or interface) designed by you.  
+• Javadoc for all public members.  
+• Unit tests (use JUnit) covering the new feature.  
+
+**💡 Hints:**  
 <details>
 <summary>Click for hint</summary>
 
-• Keep the wear formula simple for now: `wear += (temp - 80) * 0.05`.  
-• Use `String.format()` for neat console alignment.  
-• Break big tasks into helper methods: `logLapStatus()`, `checkFinishConditions()`.
-</details>
-
-✅ Success Criteria:  
-- [ ] Simulation prints every lap until race end or tire blow-out  
-- [ ] Wear increases and eventually triggers a pit call or failure  
-- [ ] No uncaught exceptions for normal input  
-- [ ] Code follows SRP (Car handles state; RaceEngineer handles decisions)  
-
-
-### Exercise 5: Pit-Stop Prophet 🚀  
-⏱️ Estimated Time: 60-90 minutes  
-
-🎯 Goal: Upgrade RaceEngineer into a data-driven strategist that reads configuration files, calculates blow-out probability, and chooses the optimal lap to pit.
-
-📝 Instructions:  
-Part A – Strategy Configuration  
-1. Create `config/strategy.json` (or `.csv`) with keys such as:  
-   • softTyreWearRate = 1.25  
-   • hardTyreWearRate = 0.85  
-   • basePitLossSeconds = 22.5  
-2. Write `StrategyLoader.java` that reads the file at program start and populates a `StrategyConfig` object.
-
-Part B – Probability Model  
-3. In `Tire`, add `double blowoutRisk()` that returns a value between 0 and 1 using e.g.  
-   `risk = Math.pow(wear / 100, 3) + (temp > 110 ? 0.1 : 0);`  
-4. In `RaceEngineer`, implement `boolean shouldPit(Car car, int lapRemaining)` that decides to pit when:  
-   • Expected time lost if the tire blows > expected pit-loss seconds  
-   • Risk threshold is configurable in the strategy file
-
-Part C – Resilience & Logging  
-5. Wrap all file I/O in try-with-resources. If the config is missing, load sensible defaults and warn the user.  
-6. Extend the lap log with the live blow-out probability. Example:  
-```
-Lap 18 | Temp 118.0 °C | Wear 85.4 % | Blow-out Risk 0.57 | BOX!
-```
-
-💡 Hints:  
-<details>
-<summary>Click for hint</summary>
-
-• Use `java.nio.file.Files.readString(Path)` for quick JSON loading (or `BufferedReader` for CSV).  
-• Consider delegation: `RaceEngineer` queries `StrategyConfig` instead of hard-coding numbers.  
-• To parse simple JSON without external libs, you can hand-roll or store one key=value per line.
-```java
-Map<String, Double> cfg = Files.lines(Path.of("config/strategy.csv"))
-                               .map(l -> l.split(","))
-                               .collect(Collectors.toMap(a -> a[0], a -> Double.parseDouble(a[1])));
-```
-</details>
-
-✅ Success Criteria:  
-- [ ] Config file parsed and applied without crashing, even if missing keys  
-- [ ] Blow-out probability reported every lap  
-- [ ] `shouldPit` uses probability + pit-loss math, not a fixed lap count  
-- [ ] Code is well-commented and unit-testable (hint: inject StrategyConfig)  
-
-
-### Exercise 6: Choose Your Chaos 🌟  
-⏱️ Estimated Time: 60-90 minutes  
-
-🎯 Goal: Add a creative, student-chosen feature that enriches gameplay and demonstrates solid class design plus documentation.
-
-📝 Instructions: Select ONE option below (or propose your own to the instructor). Implement it with clear Javadoc and integrate it into `RaceSimulator`.
-
-Option A: Weather Wizard  
-• Generate dynamic weather every 5 laps (sunny, cloudy, light rain, heavy rain).  
-• Track temperature and tire wear rates adjust based on weather.  
-• Display an ASCII weather icon in the lap log.
-
-Option B: Driver Aggression Matrix  
-• Add a `Driver` class with an aggression level (1-10).  
-• Aggressive drivers set faster lap times but overheat tires more.  
-• Allow changing aggression via a console prompt mid-race (“Push, push!”).
-
-Option C: Live Telemetry Dashboard  
-• Use `javafx` or a simple Swing panel to visualize tire wear and risk in real time.  
-• Graph updates every lap; red-lines when risk > 0.6.  
-• Keep the console output too—double feedback channels!
-
-💡 Hints:  
-<details>
-<summary>Click for hint</summary>
-
-Regardless of the option, remember: one class should own one responsibility. If you add weather, resist the urge to cram weather logic into Car; create `WeatherSystem` instead.
+• Keep it small but polished—depth over breadth.  
+• Isolate the creative code in its own package (`adventure`, `badges`, or `recommendation`).  
+• Reuse data already parsed; do NOT re-read the CSV file.  
 
 ```java
 /**
- * Calculates the lap-specific wear multiplier based on current weather.
- * @return multiplier >= 0.0
+ * Returns a List of Badge objects the traveler just earned.
+ * @param itinerary the completed itinerary
  */
-public double getWearMultiplier() { ... }
+public List<Badge> evaluate(Itinerary itinerary) {
+    // Your creative logic here
+}
 ```
 </details>
 
-✅ Success Criteria:  
-- [ ] Feature implemented matches chosen option’s bullet points  
-- [ ] Javadoc present for every new public class and method  
-- [ ] No circular dependencies introduced  
-- [ ] Feature can be toggled on/off via a config or command-line flag  
-- [ ] Code passes existing tests and any new tests you add  
+**✅ Success Criteria:**  
+- [ ] Feature is functional and demo-ready.  
+- [ ] Clear, correct Javadoc and meaningful unit tests.  
+- [ ] Code follows Java naming and style conventions.  
+- [ ] Reflects thoughtful class design (SRP, low coupling).  
 
+---
 
-## 🎉 Submission Checklist
+## 🎉 Submission Checklist  
 
-Before submitting, ensure you have:
+Before submitting, ensure you have:  
 
-- [ ] Completed all six exercises
-- [ ] Simulation runs from `Main` without runtime exceptions
-- [ ] Telemetry file parsing handles corrupt or missing lines gracefully
-- [ ] Strategy config loads even when optional parameters are absent
-- [ ] At least one creative extension from Exercise 6 is fully integrated
-- [ ] All new public methods/classes include Javadoc
-- [ ] Console output is readable and well-formatted
-- [ ] Variable and method names follow Java camelCase / PascalCase conventions
-- [ ] Git repository contains meaningful commit messages (≥ one per exercise)
-- [ ] `README.md` describes how to compile, run, and play your mini-game  
+- [ ] Completed all 6 exercises.  
+- [ ] All unit tests pass (`mvn test` or IDE equivalent).  
+- [ ] No TODO markers remain in source code.  
+- [ ] Used `try-with-resources` for every file/stream.  
+- [ ] Added Javadoc to every public class, method, and field.  
+- [ ] Included a UML or class diagram (`/docs/diagram.png` or `.uml`).  
+- [ ] Pushed final commit and tagged it `v1.0` in Git.  
+- [ ] Provided a short `README.md` with build/run instructions.  
+- [ ] Verified that `java -jar GalacticTravelLog.jar` launches without errors.  
 
+---
 
-## 🤔 Reflection Questions
+## 🤔 Reflection Questions  
 
-1. How did modeling blow-out probability as a function of both wear and temperature change your pit-stop strategy compared with a simple wear threshold?  
-2. Which class in your design was hardest to keep within a single responsibility, and how did you refactor (or wish you had)?  
-3. If this simulation were expanded for real-time use on an actual pit wall, what performance or scalability concerns would arise, and how might you address them?  
+1. How did using `Optional` in the factory pattern influence the robustness of your file-reading code compared to returning `null`?  
+2. Describe one design decision you changed after unit testing began. What triggered the change, and how did it improve your code?  
+3. Imagine scaling this program for a commercial booking site with real-time data feeds. Which part of your current architecture would need the most refactoring, and why?  
 
+---
 
-## 📚 Additional Resources
+## 📚 Additional Resources  
 
-• Oracle Java I/O Tutorial – docs.oracle.com/javase/tutorial/essential/io/  
-• “The Mathematics of Tire Degradation in F1” (blog post) – tinyurl.com/f1-tire-math  
-• OpenCSV (lightweight CSV parser) – opencsv.sourceforge.net/  
-• JavaFX tutorials (for Option C) – openjfx.io/openjfx-docs/  
-• SOLID Principles explained with Java examples – medium.com/solid-java  
+• Oracle Java I/O Tutorial – https://docs.oracle.com/javase/tutorial/essential/io/  
+• Fowler, “Clean Code Applied to Java” (blog post) – great read on SRP and small classes.  
+• NASA Exoplanet Archive – https://exoplanetarchive.ipac.caltech.edu/  
+• ASCII Art & Plotting Basics – https://gist.github.com/unsplash/ ASCII cheat-sheet.  
+• JUnit 5 User Guide – https://junit.org/junit5/docs/current/user-guide/  
+
+Happy coding, and may your itineraries be ever adventurous! 🚀
