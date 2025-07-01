@@ -1,61 +1,51 @@
-// Main.java
+// File: Main.java
 public class Main {
     public static void main(String[] args) {
-        // entry point: set up reader, config, engineer, tires, car, simulator
+        // Entry point for the simulation
     }
 }
 
-// TelemetryReader.java
+// File: TelemetryReader.java
 public class TelemetryReader {
     public TelemetryReader(String filePath) {
-        // initialize reader with file path
     }
-    // methods to read telemetry data
 }
 
-// StrategyLoader.java
+// File: StrategyConfig.java
+public class StrategyConfig {
+    // Holds strategy parameters
+}
+
+// File: StrategyLoader.java
 public class StrategyLoader {
     public static StrategyConfig loadConfig(String filePath) {
-        // load and return strategy configuration
         return null;
     }
 }
 
-// StrategyConfig.java
-public class StrategyConfig {
-    // strategy configuration fields and constructors
-}
-
-// RaceEngineer.java
+// File: RaceEngineer.java
 public class RaceEngineer {
     public RaceEngineer(StrategyConfig config) {
-        // initialize engineer with strategy
     }
-    // methods to decide pit stops and tire changes
 }
 
-// Tire.java
+// File: Tire.java
 public class Tire {
-    public Tire(double initialTemperature) {
-        // set initial tire state
+    public Tire(double initialPressure) {
     }
-    // tire properties and methods
 }
 
-// Car.java
+// File: Car.java
 public class Car {
     public Car(Tire startingTire) {
-        // initialize car with starting tire
     }
-    // methods to update car state during simulation
 }
 
-// RaceSimulator.java
+// File: RaceSimulator.java
 public class RaceSimulator {
     public RaceSimulator(TelemetryReader reader, Car car, RaceEngineer engineer) {
-        // initialize simulator components
     }
+
     public void run() {
-        // execute the simulation loop
     }
 }

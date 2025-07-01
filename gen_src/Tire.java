@@ -1,48 +1,47 @@
-// File: Tire.java
-
+// Tire.java
 public class Tire {
     private double temperature;
     private double wearPercentage;
 
     public Tire(double startingTemperature) {
-        // TODO: initialize fields
+        // TODO
     }
 
     public Tire(TelemetryData data) {
-        // TODO: initialize fields from TelemetryData
+        // TODO
     }
 
     public double getTemperature() {
-        // TODO: return current temperature
-        return 0.0;
+        // TODO
+        return 0;
     }
 
     public double getWearPercentage() {
-        // TODO: return current wear percentage
-        return 0.0;
+        // TODO
+        return 0;
     }
 
     public void updateTemperature(double newTemp) {
-        // TODO: update temperature
+        // TODO
     }
 
     public void incrementWear(double delta) {
-        // TODO: increase wear, cap at maximum
+        // TODO
     }
 
     public boolean isBlown() {
-        // TODO: determine if tire is blown
+        // TODO
         return false;
     }
 
     public double blowoutRisk() {
-        // TODO: calculate risk of blowout
-        return 0.0;
+        // TODO
+        return 0;
     }
 
     @Override
     public String toString() {
-        // TODO: return descriptive string
-        return null;
+        // TODO
+        return "";
     }
 }

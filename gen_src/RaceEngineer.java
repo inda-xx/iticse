@@ -7,7 +7,7 @@ public class RaceEngineer {
     }
 
     public boolean shouldPit(Car car, int lapsRemaining) {
-        // TODO: decide whether to pit based on strategy configuration and car state
+        // TODO: implement pit-stop decision logic
         return false;
     }
 }

@@ -6,22 +6,22 @@ public class TelemetryData {
     private final double lapTimeSeconds;
 
     public TelemetryData(int lapNumber, double tireTempCelsius, double trackTempCelsius, double lapTimeSeconds) {
-        // TODO: initialize fields
+        throw new UnsupportedOperationException();
     }
 
     public int getLapNumber() {
-        // TODO: return lap number
+        throw new UnsupportedOperationException();
     }
 
     public double getTireTempCelsius() {
-        // TODO: return tire temperature in Celsius
+        throw new UnsupportedOperationException();
     }
 
     public double getTrackTempCelsius() {
-        // TODO: return track temperature in Celsius
+        throw new UnsupportedOperationException();
     }
 
     public double getLapTimeSeconds() {
-        // TODO: return lap time in seconds
+        throw new UnsupportedOperationException();
     }
 }

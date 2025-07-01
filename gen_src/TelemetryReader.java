@@ -6,15 +6,15 @@ public class TelemetryReader {
     private BufferedReader reader;
 
     public TelemetryReader(String filename) throws IOException {
-        // initialize reader
+        // setup reader
     }
 
     public Optional<TelemetryData> nextLap() throws IOException {
-        // read and parse next telemetry line
+        // read next line and parse into TelemetryData
         return Optional.empty();
     }
 
     public void close() throws IOException {
-        // close reader
+        // close resources
     }
 }
