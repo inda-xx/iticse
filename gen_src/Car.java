@@ -1,23 +1,30 @@
-// File: Car.java
 public class Car {
     private Tire tire;
     private boolean blown;
 
     public Car(Tire tire) {
-        // initialize fields
+        this.tire = tire;
+        this.blown = false;
     }
 
     public Tire getTire() {
-        // return the current tire
         return tire;
     }
 
     public void updateWithLap(TelemetryData data) {
-        // update tire state based on telemetry
+        tire.updateTemperature(data.getTireTempCelsius());
+
+        double temp = data.getTireTempCelsius();
+        double lapTime = data.getLapTimeSeconds();
+
+        double wearDelta = (temp - 80.0) * 0.05;
+        if (wearDelta < 0) wearDelta = 0;
+        tire.incrementWear(wearDelta);
+
+        blown = tire.isBlown();
     }
 
     public boolean hasBlownTire() {
-        // indicate if the tire has blown
         return blown;
     }
 }
